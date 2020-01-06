@@ -1,19 +1,17 @@
-import C from './constants'
-import { skiDay } from './store/reducers'
+import C from './constants';
+import { errors } from './store/reducers';
 
-const state = null
+const state = [
+    "user not authorized",
+    "server not found"
+];
 
 const action = {
-	type: C.ADD_DAY,
-	payload: {
-        "resort": "Heavenly",
-        "date": "2018-12-17",
-        "powder": true,
-        "backcountry": false
-    }
+	type: C.CLEAR_ERROR,
+	payload: 0
 }
 
-const nextState = skiDay(state, action)
+const nextState = errors(state, action)
 
 console.log(`
 
