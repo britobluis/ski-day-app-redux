@@ -1,20 +1,33 @@
 import C from './constants';
 import appReducer from './store/reducers';
-import initialState from './initialState.json';
 import { createStore } from 'redux';
+
+const initialState = JSON.parse(localStorage['redux-store']) ? // Checks if localStorage is initialized if not sets it to blank
+    JSON.parse(localStorage['redux-store']) :
+    {}
 
 const store = createStore(appReducer, initialState)
 
-console.log(`initial state:`, store.getState())
+window.store = store; // Sets window.store as store to use it in the console, not safe for production
 
-store.dispatch({ // dispatch() is used to mutate state
+store.subscribe( () => { console.log(store.getState()) }) // Log to console everytime an Action is dispatched
+
+store.subscribe(() => { // Set state to localStorage everytime an Action is dispatched
+    const state = JSON.stringify(store.getState())
+    localStorage['redux-store'] = state
+})
+
+store.dispatch({
     type: C.ADD_DAY,
     payload: {
         "resort": "Mt Shasta",
-        "date": "2020-01-06",
-        "powder": false,
-        "backcountry": true
+        "date": "2019-10-29",
+        "power": true,
+        "backcountry": false
     }
 })
 
-console.log(`next state:`, (store.getState()))
+store.dispatch({
+    type: C.SET_GOAL,
+    payload: 2
+})
